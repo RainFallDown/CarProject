@@ -1,0 +1,56 @@
+version: '3.2'
+services:
+  car-project-api:
+    build:       
+      context: ./
+      dockerfile: CarProject.Api/Dockerfile
+    container_name: car-project-api
+    restart: unless-stopped
+    ports:
+      - 81:80
+      - 82:433
+    depends_on:
+      - "carprojectdbrabbitmq"
+      - "carprojectdb"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+      - LC_ALL=en_US.UTF-8 
+      - LANG=en_US.UTF-8
+    networks:
+    - local
+  carprojectdb:
+    image: postgres:alpine
+    container_name: carprojectdb
+    restart: unless-stopped
+    volumes:
+      - postgres:/var/lib/postgresql/carprojectdbdata
+      - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
+    environment:
+      - POSTGRES_USER=CarProjectAdmin
+      - POSTGRES_PASSWORD=MySuperSecurePassword
+      - POSTGRES_DB=CarProjectDb
+    ports:
+      - 5433:5432
+    networks:
+    - local
+  carprojectdbrabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'carprojectdbrabbitmq'
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    environment:
+        - RABBITMQ_DEFAULT_USER=CarProjectAdmin
+        - RABBITMQ_DEFAULT_PASS=MySuperSecurePassword
+    networks:
+        - local
+
+networks:
+  local:
+    driver: bridge
+volumes:
+  postgres:
