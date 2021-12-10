@@ -2,15 +2,15 @@
 # Car Project
 **Used technologies and techniques** 
 
-.Net 6 used for Web API and services. 
-PostgreSql -Npgsql
-Dapper
-RabbitMQ
-EasyNetQ
-AutoMapper
-Docker - Docker-Compose
-Dependency Injection
-Exception and Response Middlewares
+ - .Net 6 used for Web API and services. 
+ - PostgreSql -Npgsql
+ - Dapper
+ - RabbitMQ
+ - EasyNetQ
+ - AutoMapper
+ - Docker - Docker-Compose
+ - Dependency Injection
+ - Exception and Response Middlewares
 
 This project can be expanded with FluentValidation, Authorization, JWT, Logging etc.
 
@@ -32,7 +32,9 @@ http://localhost:81/swagger
 
 This enpoint can be used for querying adverts via dynamic parameters with sorting and paging features. Enumerations for this model can be found below.
 
-    Request Model
+  **Request Model**
+
+  
     {
       "categoryId": 0,
       "priceLow": 0,
