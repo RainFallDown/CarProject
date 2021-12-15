@@ -7,7 +7,6 @@ using CarProject.Api.Middleware.Extension;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorPages();
 builder.Services.AddInfrastructure();
 builder.Services.AddCors();
 builder.Services.AddControllers();

@@ -57,12 +57,12 @@ namespace CarProject.Api.Controllers
             return await _advertVisitService.GetAllVisits();
         }
         [HttpGet]
-        public async Task Visit(string advertId)
+        public async Task Visit(int advertId)
         {
             //await _advertVisitService.AddVisit(advertId, RemoteIp);
             await _bus.PubSub.PublishAsync<AdvertVisit>(new AdvertVisit()
             {
-                AdvertId = Convert.ToInt32(advertId),
+                AdvertId = advertId,
                 IPAdress = RemoteIp,
                 VisitDate = DateTime.Now,
             });

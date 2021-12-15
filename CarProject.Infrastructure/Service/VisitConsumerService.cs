@@ -15,11 +15,14 @@ namespace CarProject.Infrastructure.Service
             _advertVisitService = advertVisitService;
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
-            _bus.PubSub.Subscribe<AdvertVisit>($"VisitConsumer", HandleMessage);
+            await _bus.PubSub.SubscribeAsync<AdvertVisit>($"VisitConsumer", message => Task.Factory.StartNew(async () =>
+            {
+                await HandleMessage(message);
+            }));
             Console.WriteLine($"Background task doing work.");
-            return Task.CompletedTask;
+            return;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
@@ -27,10 +30,10 @@ namespace CarProject.Infrastructure.Service
             throw new NotImplementedException();
         }
 
-        private void HandleMessage(AdvertVisit visit)
+        private async Task HandleMessage(AdvertVisit visit)
         {
             Console.WriteLine($"{visit.AdvertId} visited from: {visit.IPAdress}");
-            _advertVisitService.AddVisit(visit.AdvertId.ToString(), visit.IPAdress);
+            await _advertVisitService.AddVisit(visit.AdvertId.ToString(), visit.IPAdress);
 
         }
     }

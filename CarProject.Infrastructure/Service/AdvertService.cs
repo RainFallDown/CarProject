@@ -29,7 +29,7 @@ namespace CarProject.Infrastructure.Service
                 {
                     Adverts = _mapper.Map<List<PagedAdvertDto>>(adverts),
                     Total = adverts.FirstOrDefault().TotalCount,
-                    Page = parameters.Page
+                    Page = parameters.Page == 0 ? 1 : parameters.Page,
                 };
             }
             return new QueryAdvertDto();
